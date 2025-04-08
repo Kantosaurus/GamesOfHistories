@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 23, 23, 23;
+  --background-rgb: 250, 250, 250;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: rgb(var(--background-rgb));
+}
+
+@layer base {
+  .font-serif {
+    font-family: 'Times New Roman', Times, serif;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-amber-800 text-white px-6 py-2 rounded-md hover:bg-amber-900 transition-colors;
+  }
+  
+  .section-title {
+    @apply text-3xl font-serif text-center mb-12;
+  }
+} 
