@@ -10,7 +10,6 @@ const gameComponents = [
     id: 'cards',
     category: 'Cards',
     items: [
-      'Incumbent cards',
       'Spy cards',
       'Consul Disapprove Card',
       'Senate Disapprove Card',
@@ -44,20 +43,6 @@ const gameComponents = [
 ];
 
 const cardDetails = [
-  {
-    title: 'Incumbent Cards',
-    description: 'These cards represent players who are trying to gain control of provinces. They must carefully manage their resources and make strategic decisions to achieve their objectives.',
-    abilities: [
-      'Gain control of provinces',
-      'Manage resources strategically',
-      'Work towards victory conditions'
-    ],
-    icon: (
-      <svg className="w-12 h-12 text-amber-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"/>
-      </svg>
-    )
-  },
   {
     title: 'Spy Cards',
     description: 'Spies work to prevent incumbents from achieving their goals. They must be subtle in their actions while disrupting the plans of other players.',
@@ -259,35 +244,236 @@ const boardDetails = [
 
 export default function Components() {
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
-  const [selectedCard, setSelectedCard] = useState<string | null>(null);
+  const [selectedCards, setSelectedCards] = useState<{[key: string]: string | null}>({
+    cards: null,
+    tokens: null,
+    board: null
+  });
   const [isHovered, setIsHovered] = useState<string | null>(null);
 
   const toggleCategory = (categoryId: string) => {
     setExpandedCategory(expandedCategory === categoryId ? null : categoryId);
+    setSelectedCards({
+      cards: null,
+      tokens: null,
+      board: null
+    });
   };
 
-  const toggleCard = (cardTitle: string) => {
-    setSelectedCard(selectedCard === cardTitle ? null : cardTitle);
+  const toggleCard = (cardId: string, category: string) => {
+    setSelectedCards(prev => ({
+      ...prev,
+      [category]: prev[category] === cardId ? null : cardId
+    }));
+  };
+
+  const renderCardDetails = (cards: typeof cardDetails | typeof tokenDetails | typeof boardDetails, category: string) => {
+    return (
+      <div className="space-y-12">
+        {cards.map((card, index) => {
+          const cardId = `${category}-${card.title}-${index}`;
+          return (
+            <motion.div
+              key={cardId}
+              layout="position"
+              className={`bg-gradient-to-br from-white to-amber-50 rounded-xl shadow-lg transform transition-all duration-500 overflow-hidden ${
+                selectedCards[category] === cardId ? 'ring-2 ring-amber-500' : ''
+              } ${
+                isHovered === cardId ? 'hover:shadow-xl' : ''
+              }`}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ 
+                duration: 0.5, 
+                delay: index * 0.1,
+                layout: { 
+                  duration: 0.4,
+                  ease: "easeInOut"
+                }
+              }}
+              onClick={() => toggleCard(cardId, category)}
+              onMouseEnter={() => setIsHovered(cardId)}
+              onMouseLeave={() => setIsHovered(null)}
+            >
+              <div className="relative">
+                <motion.div 
+                  layout="position"
+                  transition={{ duration: 0.4, ease: "easeInOut" }}
+                  className="p-8"
+                >
+                  <motion.div 
+                    layout="position"
+                    transition={{ duration: 0.4, ease: "easeInOut" }}
+                    className="flex items-start gap-6"
+                  >
+                    <motion.div
+                      layout="position"
+                      transition={{ duration: 0.4, ease: "easeInOut" }}
+                      className="flex-shrink-0 bg-gradient-to-br from-amber-100 to-amber-50 p-4 rounded-xl shadow-sm"
+                    >
+                      <motion.div
+                        whileHover={{ scale: 1.05, rotate: 5 }}
+                        transition={{ duration: 0.3, ease: "easeOut" }}
+                        className="w-16 h-16 flex items-center justify-center"
+                      >
+                        {card.icon}
+                      </motion.div>
+                    </motion.div>
+                    <div className="flex-grow">
+                      <motion.div 
+                        layout="position"
+                        transition={{ duration: 0.4, ease: "easeInOut" }}
+                        className="flex items-center justify-between"
+                      >
+                        <motion.h3 
+                          layout="position"
+                          transition={{ duration: 0.4, ease: "easeInOut" }}
+                          className="text-2xl font-serif text-amber-900 mb-2"
+                        >
+                          {card.title}
+                        </motion.h3>
+                        <motion.div
+                          layout="position"
+                          animate={{ rotate: selectedCards[category] === cardId ? 180 : 0 }}
+                          transition={{ duration: 0.4, ease: "easeInOut" }}
+                          className="flex-shrink-0 ml-4"
+                        >
+                          <svg 
+                            className="w-6 h-6 text-amber-800" 
+                            fill="none" 
+                            viewBox="0 0 24 24" 
+                            stroke="currentColor"
+                          >
+                            <path 
+                              strokeLinecap="round" 
+                              strokeLinejoin="round" 
+                              strokeWidth={2} 
+                              d="M19 9l-7 7-7-7" 
+                            />
+                          </svg>
+                        </motion.div>
+                      </motion.div>
+                      <motion.p 
+                        layout="position"
+                        transition={{ duration: 0.4, ease: "easeInOut" }}
+                        className="text-stone-600"
+                      >
+                        {card.description}
+                      </motion.p>
+                    </div>
+                  </motion.div>
+                </motion.div>
+
+                <AnimatePresence mode="wait">
+                  {selectedCards[category] === cardId && (
+                    <motion.div
+                      layout="position"
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ 
+                        duration: 0.4,
+                        ease: "easeInOut",
+                        height: {
+                          duration: 0.4,
+                          ease: "easeInOut"
+                        }
+                      }}
+                      className="border-t border-amber-100"
+                    >
+                      <motion.div 
+                        layout="position"
+                        transition={{ duration: 0.4, ease: "easeInOut" }}
+                        className="p-8 bg-gradient-to-br from-amber-50/50 to-amber-100/30"
+                      >
+                        <motion.div 
+                          layout="position"
+                          transition={{ duration: 0.4, ease: "easeInOut" }}
+                          className="flex items-center gap-3 mb-6"
+                        >
+                          <svg 
+                            className="w-5 h-5 text-amber-800" 
+                            fill="none" 
+                            viewBox="0 0 24 24" 
+                            stroke="currentColor"
+                          >
+                            <path 
+                              strokeLinecap="round" 
+                              strokeLinejoin="round" 
+                              strokeWidth={2} 
+                              d="M13 10V3L4 14h7v7l9-11h-7z" 
+                            />
+                          </svg>
+                          <motion.h4 
+                            layout="position"
+                            transition={{ duration: 0.4, ease: "easeInOut" }}
+                            className="text-xl font-serif text-amber-800"
+                          >
+                            Abilities & Features
+                          </motion.h4>
+                        </motion.div>
+                        <motion.ul 
+                          layout="position"
+                          transition={{ duration: 0.4, ease: "easeInOut", delayChildren: 0.1, staggerChildren: 0.05 }}
+                          className="grid gap-4 sm:grid-cols-2"
+                        >
+                          {card.abilities.map((ability, abilityIndex) => (
+                            <motion.li
+                              layout="position"
+                              key={`${cardId}-ability-${abilityIndex}`}
+                              className="flex items-start gap-3 group bg-white/60 p-4 rounded-lg"
+                              initial={{ opacity: 0, x: -10 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              exit={{ opacity: 0, x: -10 }}
+                              transition={{ 
+                                duration: 0.3,
+                                delay: 0.1 + abilityIndex * 0.05,
+                                ease: "easeOut"
+                              }}
+                            >
+                              <span className="text-amber-800 font-serif text-lg transform group-hover:scale-110 transition-transform">•</span>
+                              <span className="text-stone-700 group-hover:text-amber-900 transition-colors">{ability}</span>
+                            </motion.li>
+                          ))}
+                        </motion.ul>
+                      </motion.div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </motion.div>
+          );
+        })}
+      </div>
+    );
   };
 
   return (
     <PageTransition>
-      <main className="min-h-screen bg-stone-50">
+      <main className="min-h-screen bg-gradient-to-br from-stone-50 to-amber-50/20">
         <Navbar />
         
         <section className="pt-32 pb-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h1 className="text-4xl font-serif text-center mb-12">Game Components</h1>
+            <motion.h1 
+              className="text-5xl font-serif text-center mb-12 text-amber-900"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              Game Components
+            </motion.h1>
 
             {/* Component Overview */}
             <motion.div
               className="mb-16 max-w-3xl mx-auto text-center"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
             >
               <h2 className="text-2xl font-serif mb-4 text-amber-900">Component Overview</h2>
-              <p className="text-stone-600">
+              <p className="text-stone-600 text-lg">
                 Each component in the game has been carefully designed to enhance the strategic depth and historical theme of the game. 
                 From the various cards that represent political power and divine intervention, to the tokens that track resources and military strength, 
                 every piece plays a crucial role in the gameplay experience.
@@ -295,60 +481,28 @@ export default function Components() {
             </motion.div>
             
             {/* Component Categories */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {gameComponents.map((category, index) => (
-                <div key={category.id} className="mb-24 md:mb-0">
-                  <motion.div
-                    className="bg-white p-6 rounded-lg shadow-lg"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                  >
-                    <h2 className="text-2xl font-serif mb-4 text-amber-900">{category.category}</h2>
-                    <p className="text-stone-600 mb-4">{category.description}</p>
-                    
-                    <motion.button
-                      className="w-full bg-amber-800 text-white px-4 py-2 rounded-md hover:bg-amber-900 transition-colors"
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      onClick={() => toggleCategory(category.id)}
-                    >
-                      {expandedCategory === category.id ? 'Hide Items' : 'Show Items'}
-                    </motion.button>
-                  </motion.div>
-
-                  <AnimatePresence mode="wait">
-                    {expandedCategory === category.id && (
-                      <motion.div
-                        key={`${category.id}-content`}
-                        className="bg-white mt-2 p-6 rounded-lg shadow-lg border-t-4 border-amber-800"
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        transition={{ duration: 0.2 }}
-                      >
-                        <ul className="space-y-2">
-                          {category.items.map((item, itemIndex) => (
-                            <motion.li
-                              key={`${category.id}-${itemIndex}`}
-                              className="text-stone-700 border-l-4 border-amber-800 pl-4 py-1"
-                              initial={{ opacity: 0, x: -20 }}
-                              animate={{ opacity: 1, x: 0 }}
-                              transition={{ delay: itemIndex * 0.1 }}
-                            >
-                              {item}
-                            </motion.li>
-                          ))}
-                        </ul>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+              {gameComponents.map((component) => (
+                <motion.div
+                  key={component.id}
+                  className={`p-8 rounded-xl cursor-pointer transform transition-all duration-300 ${
+                    expandedCategory === component.id 
+                      ? 'bg-gradient-to-br from-amber-800 to-amber-700 text-white shadow-lg scale-105' 
+                      : 'bg-white hover:bg-amber-50'
+                  }`}
+                  whileHover={{ scale: expandedCategory === component.id ? 1.05 : 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => toggleCategory(component.id)}
+                >
+                  <h3 className="text-2xl font-serif mb-4">{component.category}</h3>
+                  <p className={expandedCategory === component.id ? 'text-white/90' : 'text-stone-600'}>
+                    {component.description}
+                  </p>
+                </motion.div>
               ))}
             </div>
 
-            {/* Detailed Card Sections */}
-            <AnimatePresence>
+            <AnimatePresence mode="wait">
               {expandedCategory === 'cards' && (
                 <motion.div
                   className="mt-16"
@@ -358,111 +512,14 @@ export default function Components() {
                   transition={{ duration: 0.3 }}
                 >
                   <motion.h2 
-                    className="text-3xl font-serif text-center mb-12 text-amber-900"
+                    className="text-4xl font-serif text-center mb-12 text-amber-900"
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2 }}
                   >
                     Card Details
                   </motion.h2>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {cardDetails.map((card, index) => (
-                      <motion.div
-                        key={card.title}
-                        className={`bg-white rounded-lg shadow-lg transform transition-all duration-300 ${
-                          selectedCard === card.title ? 'scale-105 ring-2 ring-amber-500' : ''
-                        } ${
-                          isHovered === card.title ? 'hover:scale-102' : ''
-                        }`}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        transition={{ duration: 0.3, delay: index * 0.1 }}
-                        onClick={() => toggleCard(card.title)}
-                        onMouseEnter={() => setIsHovered(card.title)}
-                        onMouseLeave={() => setIsHovered(null)}
-                      >
-                        <div className="p-6 cursor-pointer">
-                          <div className="flex items-center justify-between mb-4">
-                            <div className="flex items-center space-x-4">
-                              <motion.div
-                                whileHover={{ scale: 1.1, rotate: 5 }}
-                                transition={{ duration: 0.2 }}
-                                className="bg-amber-50 p-3 rounded-lg"
-                              >
-                                {card.icon}
-                              </motion.div>
-                              <h3 className="text-2xl font-serif text-amber-900">{card.title}</h3>
-                            </div>
-                            <motion.div
-                              animate={{ rotate: selectedCard === card.title ? 180 : 0 }}
-                              transition={{ duration: 0.3 }}
-                            >
-                              <svg 
-                                className="w-6 h-6 text-amber-800" 
-                                fill="none" 
-                                viewBox="0 0 24 24" 
-                                stroke="currentColor"
-                              >
-                                <path 
-                                  strokeLinecap="round" 
-                                  strokeLinejoin="round" 
-                                  strokeWidth={2} 
-                                  d="M19 9l-7 7-7-7" 
-                                />
-                              </svg>
-                            </motion.div>
-                          </div>
-                          <p className="text-stone-600 mb-4">{card.description}</p>
-                        </div>
-
-                        <AnimatePresence>
-                          {selectedCard === card.title && (
-                            <motion.div
-                              initial={{ opacity: 0, height: 0 }}
-                              animate={{ opacity: 1, height: 'auto' }}
-                              exit={{ opacity: 0, height: 0 }}
-                              transition={{ duration: 0.3 }}
-                              className="px-6 pb-6"
-                            >
-                              <div className="bg-amber-50 p-6 rounded-lg">
-                                <h4 className="text-lg font-serif mb-4 text-amber-800 flex items-center">
-                                  <svg 
-                                    className="w-5 h-5 mr-2" 
-                                    fill="none" 
-                                    viewBox="0 0 24 24" 
-                                    stroke="currentColor"
-                                  >
-                                    <path 
-                                      strokeLinecap="round" 
-                                      strokeLinejoin="round" 
-                                      strokeWidth={2} 
-                                      d="M13 10V3L4 14h7v7l9-11h-7z" 
-                                    />
-                                  </svg>
-                                  Abilities
-                                </h4>
-                                <ul className="space-y-3">
-                                  {card.abilities.map((ability, abilityIndex) => (
-                                    <motion.li
-                                      key={abilityIndex}
-                                      className="text-stone-700 flex items-start group"
-                                      initial={{ opacity: 0, x: -20 }}
-                                      animate={{ opacity: 1, x: 0 }}
-                                      transition={{ delay: 0.3 + abilityIndex * 0.1 }}
-                                    >
-                                      <span className="text-amber-800 mr-3 transform group-hover:scale-110 transition-transform">•</span>
-                                      <span className="group-hover:text-amber-900 transition-colors">{ability}</span>
-                                    </motion.li>
-                                  ))}
-                                </ul>
-                              </div>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </motion.div>
-                    ))}
-                  </div>
+                  {renderCardDetails(cardDetails, 'cards')}
                 </motion.div>
               )}
 
@@ -475,111 +532,14 @@ export default function Components() {
                   transition={{ duration: 0.3 }}
                 >
                   <motion.h2 
-                    className="text-3xl font-serif text-center mb-12 text-amber-900"
+                    className="text-4xl font-serif text-center mb-12 text-amber-900"
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2 }}
                   >
                     Token Details
                   </motion.h2>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {tokenDetails.map((token, index) => (
-                      <motion.div
-                        key={token.title}
-                        className={`bg-white rounded-lg shadow-lg transform transition-all duration-300 ${
-                          selectedCard === token.title ? 'scale-105 ring-2 ring-amber-500' : ''
-                        } ${
-                          isHovered === token.title ? 'hover:scale-102' : ''
-                        }`}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        transition={{ duration: 0.3, delay: index * 0.1 }}
-                        onClick={() => toggleCard(token.title)}
-                        onMouseEnter={() => setIsHovered(token.title)}
-                        onMouseLeave={() => setIsHovered(null)}
-                      >
-                        <div className="p-6">
-                          <div className="flex items-center justify-between mb-4">
-                            <div className="flex items-center space-x-4">
-                              <motion.div
-                                whileHover={{ scale: 1.1, rotate: 5 }}
-                                transition={{ duration: 0.2 }}
-                                className="bg-amber-50 p-3 rounded-lg"
-                              >
-                                {token.icon}
-                              </motion.div>
-                              <h3 className="text-2xl font-serif text-amber-900">{token.title}</h3>
-                            </div>
-                            <motion.div
-                              animate={{ rotate: selectedCard === token.title ? 180 : 0 }}
-                              transition={{ duration: 0.3 }}
-                            >
-                              <svg 
-                                className="w-6 h-6 text-amber-800" 
-                                fill="none" 
-                                viewBox="0 0 24 24" 
-                                stroke="currentColor"
-                              >
-                                <path 
-                                  strokeLinecap="round" 
-                                  strokeLinejoin="round" 
-                                  strokeWidth={2} 
-                                  d="M19 9l-7 7-7-7" 
-                                />
-                              </svg>
-                            </motion.div>
-                          </div>
-                          <p className="text-stone-600 mb-4">{token.description}</p>
-                        </div>
-
-                        <AnimatePresence>
-                          {selectedCard === token.title && (
-                            <motion.div
-                              initial={{ opacity: 0, height: 0 }}
-                              animate={{ opacity: 1, height: 'auto' }}
-                              exit={{ opacity: 0, height: 0 }}
-                              transition={{ duration: 0.3 }}
-                              className="px-6 pb-6"
-                            >
-                              <div className="bg-amber-50 p-6 rounded-lg">
-                                <h4 className="text-lg font-serif mb-4 text-amber-800 flex items-center">
-                                  <svg 
-                                    className="w-5 h-5 mr-2" 
-                                    fill="none" 
-                                    viewBox="0 0 24 24" 
-                                    stroke="currentColor"
-                                  >
-                                    <path 
-                                      strokeLinecap="round" 
-                                      strokeLinejoin="round" 
-                                      strokeWidth={2} 
-                                      d="M13 10V3L4 14h7v7l9-11h-7z" 
-                                    />
-                                  </svg>
-                                  Abilities
-                                </h4>
-                                <ul className="space-y-2">
-                                  {token.abilities.map((ability, abilityIndex) => (
-                                    <motion.li
-                                      key={abilityIndex}
-                                      className="text-stone-700 flex items-start group"
-                                      initial={{ opacity: 0, x: -20 }}
-                                      animate={{ opacity: 1, x: 0 }}
-                                      transition={{ delay: 0.3 + abilityIndex * 0.1 }}
-                                    >
-                                      <span className="text-amber-800 mr-3 transform group-hover:scale-110 transition-transform">•</span>
-                                      <span className="group-hover:text-amber-900 transition-colors">{ability}</span>
-                                    </motion.li>
-                                  ))}
-                                </ul>
-                              </div>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </motion.div>
-                    ))}
-                  </div>
+                  {renderCardDetails(tokenDetails, 'tokens')}
                 </motion.div>
               )}
 
@@ -592,111 +552,14 @@ export default function Components() {
                   transition={{ duration: 0.3 }}
                 >
                   <motion.h2 
-                    className="text-3xl font-serif text-center mb-12 text-amber-900"
+                    className="text-4xl font-serif text-center mb-12 text-amber-900"
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2 }}
                   >
-                    Game Board & Markers Details
+                    Game Board & Markers
                   </motion.h2>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {boardDetails.map((board, index) => (
-                      <motion.div
-                        key={board.title}
-                        className={`bg-white rounded-lg shadow-lg transform transition-all duration-300 ${
-                          selectedCard === board.title ? 'scale-105 ring-2 ring-amber-500' : ''
-                        } ${
-                          isHovered === board.title ? 'hover:scale-102' : ''
-                        }`}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        transition={{ duration: 0.3, delay: index * 0.1 }}
-                        onClick={() => toggleCard(board.title)}
-                        onMouseEnter={() => setIsHovered(board.title)}
-                        onMouseLeave={() => setIsHovered(null)}
-                      >
-                        <div className="p-6">
-                          <div className="flex items-center justify-between mb-4">
-                            <div className="flex items-center space-x-4">
-                              <motion.div
-                                whileHover={{ scale: 1.1, rotate: 5 }}
-                                transition={{ duration: 0.2 }}
-                                className="bg-amber-50 p-3 rounded-lg"
-                              >
-                                {board.icon}
-                              </motion.div>
-                              <h3 className="text-2xl font-serif text-amber-900">{board.title}</h3>
-                            </div>
-                            <motion.div
-                              animate={{ rotate: selectedCard === board.title ? 180 : 0 }}
-                              transition={{ duration: 0.3 }}
-                            >
-                              <svg 
-                                className="w-6 h-6 text-amber-800" 
-                                fill="none" 
-                                viewBox="0 0 24 24" 
-                                stroke="currentColor"
-                              >
-                                <path 
-                                  strokeLinecap="round" 
-                                  strokeLinejoin="round" 
-                                  strokeWidth={2} 
-                                  d="M19 9l-7 7-7-7" 
-                                />
-                              </svg>
-                            </motion.div>
-                          </div>
-                          <p className="text-stone-600 mb-4">{board.description}</p>
-                        </div>
-
-                        <AnimatePresence>
-                          {selectedCard === board.title && (
-                            <motion.div
-                              initial={{ opacity: 0, height: 0 }}
-                              animate={{ opacity: 1, height: 'auto' }}
-                              exit={{ opacity: 0, height: 0 }}
-                              transition={{ duration: 0.3 }}
-                              className="px-6 pb-6"
-                            >
-                              <div className="bg-amber-50 p-6 rounded-lg">
-                                <h4 className="text-lg font-serif mb-4 text-amber-800 flex items-center">
-                                  <svg 
-                                    className="w-5 h-5 mr-2" 
-                                    fill="none" 
-                                    viewBox="0 0 24 24" 
-                                    stroke="currentColor"
-                                  >
-                                    <path 
-                                      strokeLinecap="round" 
-                                      strokeLinejoin="round" 
-                                      strokeWidth={2} 
-                                      d="M13 10V3L4 14h7v7l9-11h-7z" 
-                                    />
-                                  </svg>
-                                  Features
-                                </h4>
-                                <ul className="space-y-2">
-                                  {board.abilities.map((ability, abilityIndex) => (
-                                    <motion.li
-                                      key={abilityIndex}
-                                      className="text-stone-700 flex items-start group"
-                                      initial={{ opacity: 0, x: -20 }}
-                                      animate={{ opacity: 1, x: 0 }}
-                                      transition={{ delay: 0.3 + abilityIndex * 0.1 }}
-                                    >
-                                      <span className="text-amber-800 mr-3 transform group-hover:scale-110 transition-transform">•</span>
-                                      <span className="group-hover:text-amber-900 transition-colors">{ability}</span>
-                                    </motion.li>
-                                  ))}
-                                </ul>
-                              </div>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </motion.div>
-                    ))}
-                  </div>
+                  {renderCardDetails(boardDetails, 'board')}
                 </motion.div>
               )}
             </AnimatePresence>
