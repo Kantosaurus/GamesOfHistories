@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Circle -->
+  <circle cx="256" cy="256" r="248" fill="#B45309" stroke="#92400E" stroke-width="16"/>
+  
+  <!-- Column Base -->
+  <path d="M176 352h160v40H176z" fill="#FDE68A"/>
+  
+  <!-- Column Shaft -->
+  <path d="M192 180h128v172H192z" fill="#FDE68A"/>
+  
+  <!-- Column Capital -->
+  <path d="M160 140h192l-16 40H176z" fill="#FDE68A"/>
+  
+  <!-- Laurel Wreath -->
+  <g stroke="#FDE68A" stroke-width="12" stroke-linecap="round">
+    <!-- Left Side -->
+    <path d="M256 80c-40 40-60 80-60 120M256 80c-30 35-45 70-45 105M256 80c-20 30-30 60-30 90"/>
+    <!-- Right Side -->
+    <path d="M256 80c40 40 60 80 60 120M256 80c30 35 45 70 45 105M256 80c20 30 30 60 30 90"/>
+  </g>
+  
+  <!-- SPQR Text -->
+  <text x="256" y="320" fill="#92400E" font-family="serif" font-size="48" text-anchor="middle" font-weight="bold">SPQR</text>
+</svg> 

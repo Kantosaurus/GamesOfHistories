@@ -9,6 +9,7 @@ const gameComponents = [
   {
     id: 'cards',
     category: 'Cards',
+    backgroundImage: '/media/images/Item%20Card.png',
     items: [
       'Spy cards',
       'Consul Disapprove Card',
@@ -22,6 +23,7 @@ const gameComponents = [
   {
     id: 'tokens',
     category: 'Tokens',
+    backgroundImage: '/media/images/1st%20triumvirate.webp',
     items: [
       'Money Tokens',
       'Army Tokens',
@@ -33,6 +35,7 @@ const gameComponents = [
   {
     id: 'board',
     category: 'Game Board & Markers',
+    backgroundImage: '/media/images/final%20map.png',
     items: [
       '1 x Game Board',
       'Temple Pouch',
@@ -250,6 +253,7 @@ export default function Components() {
     board: null
   });
   const [isHovered, setIsHovered] = useState<string | null>(null);
+  const [activeBackground, setActiveBackground] = useState<string | null>(null);
 
   const toggleCategory = (categoryId: string) => {
     setExpandedCategory(expandedCategory === categoryId ? null : categoryId);
@@ -258,6 +262,8 @@ export default function Components() {
       tokens: null,
       board: null
     });
+    const component = gameComponents.find(c => c.id === categoryId);
+    setActiveBackground(component ? component.backgroundImage : null);
   };
 
   const toggleCard = (cardId: string, category: string) => {
@@ -451,120 +457,153 @@ export default function Components() {
 
   return (
     <PageTransition>
-      <main className="min-h-screen bg-gradient-to-br from-stone-50 to-amber-50/20">
-        <Navbar />
+      <main 
+        className="min-h-screen relative bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: activeBackground ? `url('${encodeURI(activeBackground)}')` : 'linear-gradient(to bottom right, rgb(250 250 249), rgb(254 243 199 / 0.2))'
+        }}
+      >
+        <div className="absolute inset-0 bg-white/30 backdrop-blur-md" />
         
-        <section className="pt-32 pb-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.h1 
-              className="text-5xl font-serif text-center mb-12 text-amber-900"
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              Game Components
-            </motion.h1>
+        <div className="relative">
+          <Navbar />
+          
+          <section className="pt-32 pb-20">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <motion.h1 
+                className="text-5xl font-serif text-center mb-12 text-amber-900"
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                Game Components
+              </motion.h1>
 
-            {/* Component Overview */}
-            <motion.div
-              className="mb-16 max-w-3xl mx-auto text-center"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              <h2 className="text-2xl font-serif mb-4 text-amber-900">Component Overview</h2>
-              <p className="text-stone-600 text-lg">
-                Each component in the game has been carefully designed to enhance the strategic depth and historical theme of the game. 
-                From the various cards that represent political power and divine intervention, to the tokens that track resources and military strength, 
-                every piece plays a crucial role in the gameplay experience.
-              </p>
-            </motion.div>
-            
-            {/* Component Categories */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-              {gameComponents.map((component) => (
-                <motion.div
-                  key={component.id}
-                  className={`p-8 rounded-xl cursor-pointer transform transition-all duration-300 ${
-                    expandedCategory === component.id 
-                      ? 'bg-gradient-to-br from-amber-800 to-amber-700 text-white shadow-lg scale-105' 
-                      : 'bg-white hover:bg-amber-50'
-                  }`}
-                  whileHover={{ scale: expandedCategory === component.id ? 1.05 : 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => toggleCategory(component.id)}
-                >
-                  <h3 className="text-2xl font-serif mb-4">{component.category}</h3>
-                  <p className={expandedCategory === component.id ? 'text-white/90' : 'text-stone-600'}>
-                    {component.description}
-                  </p>
-                </motion.div>
-              ))}
+              {/* Component Overview */}
+              <motion.div
+                className="mb-16 max-w-3xl mx-auto text-center"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+              >
+                <h2 className="text-2xl font-serif mb-4 text-amber-900">Component Overview</h2>
+                <p className="text-stone-600 text-lg backdrop-blur-sm bg-white/40 p-6 rounded-xl">
+                  Each component in the game has been carefully designed to enhance the strategic depth and historical theme of the game. 
+                  From the various cards that represent political power and divine intervention, to the tokens that track resources and military strength, 
+                  every piece plays a crucial role in the gameplay experience.
+                </p>
+              </motion.div>
+              
+              {/* Component Categories */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+                {gameComponents.map((component) => (
+                  <motion.div
+                    key={component.id}
+                    className={`p-8 rounded-xl cursor-pointer transform transition-all duration-300 backdrop-blur-md ${
+                      expandedCategory === component.id 
+                        ? 'bg-amber-800/80 text-white shadow-lg scale-105' 
+                        : 'bg-white/60 hover:bg-white/80'
+                    }`}
+                    whileHover={{ scale: expandedCategory === component.id ? 1.05 : 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => toggleCategory(component.id)}
+                  >
+                    <h3 className="text-2xl font-serif mb-4">{component.category}</h3>
+                    <p className={expandedCategory === component.id ? 'text-white/90' : 'text-stone-600'}>
+                      {component.description}
+                    </p>
+                    
+                    <AnimatePresence>
+                      {expandedCategory === component.id && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          className="mt-4 space-y-2"
+                        >
+                          {component.items.map((item, index) => (
+                            <motion.div
+                              key={index}
+                              initial={{ opacity: 0, x: -20 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: index * 0.1 }}
+                              className="flex items-center space-x-2"
+                            >
+                              <span className="w-2 h-2 rounded-full bg-white/80" />
+                              <span>{item}</span>
+                            </motion.div>
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </motion.div>
+                ))}
+              </div>
+
+              <AnimatePresence mode="wait">
+                {expandedCategory === 'cards' && (
+                  <motion.div
+                    className="mt-16"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 20 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <motion.h2 
+                      className="text-4xl font-serif text-center mb-12 text-amber-900"
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.2 }}
+                    >
+                      Card Details
+                    </motion.h2>
+                    {renderCardDetails(cardDetails, 'cards')}
+                  </motion.div>
+                )}
+
+                {expandedCategory === 'tokens' && (
+                  <motion.div
+                    className="mt-16"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 20 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <motion.h2 
+                      className="text-4xl font-serif text-center mb-12 text-amber-900"
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.2 }}
+                    >
+                      Token Details
+                    </motion.h2>
+                    {renderCardDetails(tokenDetails, 'tokens')}
+                  </motion.div>
+                )}
+
+                {expandedCategory === 'board' && (
+                  <motion.div
+                    className="mt-16"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 20 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <motion.h2 
+                      className="text-4xl font-serif text-center mb-12 text-amber-900"
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.2 }}
+                    >
+                      Game Board & Markers
+                    </motion.h2>
+                    {renderCardDetails(boardDetails, 'board')}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
-
-            <AnimatePresence mode="wait">
-              {expandedCategory === 'cards' && (
-                <motion.div
-                  className="mt-16"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 20 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <motion.h2 
-                    className="text-4xl font-serif text-center mb-12 text-amber-900"
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2 }}
-                  >
-                    Card Details
-                  </motion.h2>
-                  {renderCardDetails(cardDetails, 'cards')}
-                </motion.div>
-              )}
-
-              {expandedCategory === 'tokens' && (
-                <motion.div
-                  className="mt-16"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 20 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <motion.h2 
-                    className="text-4xl font-serif text-center mb-12 text-amber-900"
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2 }}
-                  >
-                    Token Details
-                  </motion.h2>
-                  {renderCardDetails(tokenDetails, 'tokens')}
-                </motion.div>
-              )}
-
-              {expandedCategory === 'board' && (
-                <motion.div
-                  className="mt-16"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 20 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <motion.h2 
-                    className="text-4xl font-serif text-center mb-12 text-amber-900"
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2 }}
-                  >
-                    Game Board & Markers
-                  </motion.h2>
-                  {renderCardDetails(boardDetails, 'board')}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-        </section>
+          </section>
+        </div>
       </main>
     </PageTransition>
   );

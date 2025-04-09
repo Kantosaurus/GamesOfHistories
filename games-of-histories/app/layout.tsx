@@ -1,12 +1,39 @@
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
 import './globals.css'
+import { Inter } from 'next/font/google'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export const metadata: Metadata = {
-  title: 'Imperium: A Roman Board Game',
-  description: 'Experience the glory of ancient Rome in this strategic board game. Build your empire, command legions, and shape history.',
+export const metadata = {
+  title: 'IMPERIVM',
+  description: 'A strategic board game set in ancient Rome',
+  icons: {
+    icon: [
+      {
+        url: '/icon.svg',
+        type: 'image/svg+xml',
+      },
+      {
+        url: '/favicon.ico',
+        sizes: '32x32',
+        type: 'image/x-icon',
+      },
+      {
+        url: '/icon-192.png',
+        type: 'image/png',
+        sizes: '192x192',
+      },
+      {
+        url: '/icon-512.png',
+        type: 'image/png',
+        sizes: '512x512',
+      },
+    ],
+    apple: {
+      url: '/apple-icon.png',
+      type: 'image/png',
+      sizes: '180x180',
+    },
+  },
 }
 
 export default function RootLayout({
