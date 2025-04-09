@@ -5,13 +5,20 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import PageTransition from '../components/PageTransition';
 
+type CardDetail = {
+  title: string;
+  description: string;
+  abilities: string[];
+  icon: React.ReactNode;
+  image?: string;
+};
+
 const gameComponents = [
   {
     id: 'cards',
     category: 'Cards',
     backgroundImage: '/media/images/Item Card.png',
     items: [
-      'Spy cards',
       'Consul Disapprove Card',
       'Senate Disapprove Card',
       'Assembly member convene cards',
@@ -45,7 +52,7 @@ const gameComponents = [
   }
 ];
 
-const cardDetails = [
+const cardDetails: CardDetail[] = [
   {
     title: 'Spy Cards',
     description: 'Spies work to prevent incumbents from achieving their goals. They must be subtle in their actions while disrupting the plans of other players.',
@@ -134,7 +141,7 @@ const cardDetails = [
   }
 ];
 
-const tokenDetails = [
+const tokenDetails: CardDetail[] = [
   {
     title: 'Money Tokens',
     description: 'Represent the financial resources of your faction. Used for various actions including bribes, construction, and maintaining your influence.',
@@ -184,7 +191,6 @@ const tokenDetails = [
     title: 'Player Tokens',
     description: 'Represent your presence on the board. Used to mark your position and influence in different provinces.',
     abilities: [
-      'Mark territory control',
       'Track player movement',
       'Show political influence',
       'Indicate voting power'
@@ -197,10 +203,11 @@ const tokenDetails = [
   }
 ];
 
-const boardDetails = [
+const boardDetails: CardDetail[] = [
   {
     title: 'Game Board',
     description: 'A beautifully illustrated map of ancient Rome and its surrounding provinces. The board serves as the main playing surface where all strategic decisions unfold.',
+    image: '/media/images/final map.png',
     abilities: [
       'Detailed map of ancient Rome',
       'Province territories marked',
@@ -281,7 +288,7 @@ export default function Components() {
     }));
   };
 
-  const renderCardDetails = (cards: typeof cardDetails | typeof tokenDetails | typeof boardDetails, category: string) => {
+  const renderCardDetails = (cards: CardDetail[], category: string) => {
     return (
       <div className="space-y-12">
         {cards.map((card, index) => {
@@ -401,6 +408,20 @@ export default function Components() {
                         transition={{ duration: 0.4, ease: "easeInOut" }}
                         className="p-8 bg-gradient-to-br from-amber-50/50 to-amber-100/30"
                       >
+                        {card.image && (
+                          <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.2 }}
+                            className="mb-8"
+                          >
+                            <img 
+                              src={card.image} 
+                              alt={card.title}
+                              className="w-full h-auto rounded-lg shadow-lg"
+                            />
+                          </motion.div>
+                        )}
                         <motion.div 
                           layout="position"
                           transition={{ duration: 0.4, ease: "easeInOut" }}

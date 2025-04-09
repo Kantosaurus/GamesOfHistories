@@ -97,7 +97,7 @@ const rulesSections = [
       '7. Consulship rotates',
       '8. Complete 15 government cycles',
     ],
-    description: "The game progresses through a structured sequence of setup and gameplay phases. Players begin by assuming their roles and receiving resources, then proceed through government cycles where they take turns performing actions. The game ends after two complete government cycles, at which point roles are revealed and the winner is determined."
+    description: "The game progresses through a structured sequence of setup and gameplay phases. Players begin by assuming their roles and receiving resources, then proceed through government cycles where they take turns performing actions. The game ends after 15 consul passes, at which point roles are revealed and the winner is determined."
   }
 ];
 
