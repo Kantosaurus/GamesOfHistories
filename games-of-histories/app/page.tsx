@@ -159,7 +159,7 @@ export default function Home() {
                     <div>
                       <h3 className="text-xl font-serif text-amber-900 mb-2">Historical Research</h3>
                       <p className="text-stone-600">
-                        We went for "Games of Hisotries" classes on Thursday mornings to ensure the game's authenticity, drawing 
+                        We went for "Games of Histories" classes on Thursday mornings to ensure the game's authenticity, drawing 
                         inspiration from classical texts, and modern historical research.
                       </p>
                     </div>

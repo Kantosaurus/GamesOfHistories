@@ -9,7 +9,7 @@ const gameComponents = [
   {
     id: 'cards',
     category: 'Cards',
-    backgroundImage: '/media/images/Item%20Card.png',
+    backgroundImage: '/media/images/Item Card.png',
     items: [
       'Spy cards',
       'Consul Disapprove Card',
@@ -23,7 +23,7 @@ const gameComponents = [
   {
     id: 'tokens',
     category: 'Tokens',
-    backgroundImage: '/media/images/1st%20triumvirate.webp',
+    backgroundImage: '/media/images/1st triumvirate.webp',
     items: [
       'Money Tokens',
       'Army Tokens',
@@ -35,7 +35,7 @@ const gameComponents = [
   {
     id: 'board',
     category: 'Game Board & Markers',
-    backgroundImage: '/media/images/final%20map.png',
+    backgroundImage: '/media/images/final map.png',
     items: [
       '1 x Game Board',
       'Temple Pouch',
@@ -263,7 +263,15 @@ export default function Components() {
       board: null
     });
     const component = gameComponents.find(c => c.id === categoryId);
-    setActiveBackground(component ? component.backgroundImage : null);
+    if (component) {
+      const encodedPath = component.backgroundImage.split('/').map(segment => 
+        segment.includes(' ') ? encodeURIComponent(segment) : segment
+      ).join('/');
+      setActiveBackground(encodedPath);
+      console.log('Setting background:', encodedPath); // Debug log
+    } else {
+      setActiveBackground(null);
+    }
   };
 
   const toggleCard = (cardId: string, category: string) => {
@@ -458,9 +466,14 @@ export default function Components() {
   return (
     <PageTransition>
       <main 
-        className="min-h-screen relative bg-cover bg-center bg-no-repeat"
+        className="min-h-screen relative bg-cover bg-center bg-no-repeat transition-all duration-500"
         style={{
-          backgroundImage: activeBackground ? `url('${encodeURI(activeBackground)}')` : 'linear-gradient(to bottom right, rgb(250 250 249), rgb(254 243 199 / 0.2))'
+          backgroundImage: activeBackground 
+            ? `url("${activeBackground}")` 
+            : 'linear-gradient(to bottom right, rgb(250 250 249), rgb(254 243 199 / 0.2))',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
         }}
       >
         <div className="absolute inset-0 bg-white/30 backdrop-blur-md" />
