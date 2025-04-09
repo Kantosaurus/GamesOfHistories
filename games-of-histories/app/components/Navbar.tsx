@@ -24,9 +24,6 @@ export default function Navbar() {
           
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
-            <Link href="/about" className="text-stone-700 hover:text-amber-800 transition-colors">
-              About
-            </Link>
             <Link href="/gameplay-rules" className="text-stone-700 hover:text-amber-800 transition-colors">
               Gameplay & Rules
             </Link>
@@ -77,13 +74,6 @@ export default function Navbar() {
           className="md:hidden overflow-hidden"
         >
           <div className="px-2 pt-2 pb-3 space-y-1">
-            <Link
-              href="/about"
-              className="block px-3 py-2 text-stone-700 hover:text-amber-800"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              About
-            </Link>
             <Link
               href="/gameplay-rules"
               className="block px-3 py-2 text-stone-700 hover:text-amber-800"

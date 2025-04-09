@@ -28,8 +28,6 @@ const gamePhases = [
       "2. Conquer: Pay army points to conquer provinces",
       "3. Challenge: Contest provinces or players",
       "4. Acquire gift from gods",
-      "5. Divine Foresight: View player allegiance",
-      "6. Send messenger: Communicate with other players"
     ]
   },
   {
@@ -71,10 +69,12 @@ const rulesSections = [
   {
     title: 'Game Objectives',
     content: [
-      'Incumbents: Gain control of 2 key provinces and 4 regular provinces by the end of 2 government cycles',
-      'Spies: Prevent incumbents from gaining control of 2 key provinces and 4 regular provinces by the end of 2 government cycles'
+      'The primary objective is to control as much territory as possible',
+      'Players compete to expand their influence across the map',
+      'Territory control is determined by the number of provinces under your command',
+      'The player with the most territory at the end of the game wins'
     ],
-    description: "The game includes two main roles with distinct objectives. Incumbents aim to expand their control while spies work to prevent them from achieving their goals. The game's victory conditions create tension between players with different roles, requiring careful planning and strategic thinking."
+    description: "The game's main objective is territorial expansion. Players must strategically manage their resources and make tactical decisions to gain control of as many provinces as possible. The player who successfully controls the most territory by the end of the game emerges victorious."
   },
   {
     title: 'Player Roles',
@@ -95,8 +95,7 @@ const rulesSections = [
       '5. Senate distributes money tokens',
       '6. Main gameplay begins',
       '7. Consulship rotates',
-      '8. Complete 2 government cycles',
-      '9. Reveal roles and determine winner'
+      '8. Complete 15 government cycles',
     ],
     description: "The game progresses through a structured sequence of setup and gameplay phases. Players begin by assuming their roles and receiving resources, then proceed through government cycles where they take turns performing actions. The game ends after two complete government cycles, at which point roles are revealed and the winner is determined."
   }
@@ -156,14 +155,6 @@ const additionalSections: AdditionalSection[] = [
         title: 'Sickness',
         description: 'Disease spreads through provinces. Players must spend resources on medicine or risk losing influence in affected areas.'
       },
-      {
-        title: 'Information leak',
-        description: 'Secret information becomes public. One player must reveal their role card to another player of their choice.'
-      },
-      {
-        title: 'Double crossing',
-        description: 'Political betrayal occurs. Players can break one existing alliance without the usual penalties.'
-      }
     ]
   },
   {
@@ -171,10 +162,6 @@ const additionalSections: AdditionalSection[] = [
     description: 'Special divine interventions that provide powerful one-time abilities. These can be game-changing when used at the right moment.',
     icon: '⚜️',
     content: [
-      {
-        title: 'Divine revelation',
-        description: 'Gain insight into another player\'s true intentions. Look at one player\'s role card without revealing it to others.'
-      },
       {
         title: 'Godspeed',
         description: 'The gods bless your journey. Move to any province on the board without spending movement points.'
