@@ -38,15 +38,6 @@ export default function Home() {
             >
               Command your legions, build your empire, and shape the destiny of Rome
             </motion.p>
-            <motion.button
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              className="bg-amber-800 text-white px-8 py-3 rounded-md hover:bg-amber-900 transition-colors"
-              onClick={() => window.location.href = '/pre-order'}
-            >
-              Pre-order Now
-            </motion.button>
           </div>
         </section>
 

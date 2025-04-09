@@ -211,55 +211,55 @@ const historicalSections: HistoricalSection[] = [
       {
         title: "The Sibylline Books (500 BCE)",
         description: "Sacred texts consulted by the Roman Senate during times of crisis. These books were believed to contain divine revelations that could guide Rome through difficult decisions. The Senate would turn to these prophetic books for guidance during natural disasters, plagues, or political crises.",
-        image: 'https://images.unsplash.com/photo-1544985361-b420d7a77f51?q=80&w=1920&auto=format&fit=crop',
+        image: '/media/images/The Sibylline Books.jpg',
         gameEffect: 'Divine revelation: You get to see the allegiance card of one player.'
       },
       {
         title: "Temple of Jupiter Optimus Maximus (509 BCE)",
         description: "The dedication of this temple was seen as a divine blessing for Rome's military campaigns. Romans believed that invoking Jupiter's favor would bring them success in battle. This temple became the center of Roman state religion and a symbol of divine support for Roman endeavors.",
-        image: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?q=80&w=1920&auto=format&fit=crop',
+        image: '/media/images/Temple of Jupiter Optimus Maximus.jpg',
         gameEffect: 'Godspeed: You get to add 5 to your dice roll.'
       },
       {
         title: "Hannibal Crossing the Alps (218 BCE)",
         description: "Hannibal famously relocated his forces across treacherous terrain to surprise the Romans during the Second Punic War. This legendary military maneuver demonstrated how unexpected movement could change the course of warfare and strategy.",
-        image: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?q=80&w=1920&auto=format&fit=crop',
+        image: '/media/images/Hannibal Crossing the Alps.jpg',
         gameEffect: 'Relocation: You can shift any 1 player by 5 steps in any direction of your choice.'
       },
       {
         title: "Plundering of Carthage (146 BCE)",
         description: "After defeating Carthage in the Third Punic War, Rome seized vast wealth, resources, and treasures, effectively 'stealing' everything valuable from its rival. This event marked the complete dominance of Rome over its greatest rival and the acquisition of immense wealth.",
-        image: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?q=80&w=1920&auto=format&fit=crop',
+        image: '/media/images/Plundering of Carthage.jpg',
         gameEffect: 'Pocket: You can choose to steal any of the following from a player: 5 money tokens, 5 army tokens, a gift from the gods card.'
       },
       {
         title: "Appointment of Augustus as Consul (43 BCE)",
         description: "During the power struggle after Julius Caesar's assassination, Octavian (later Augustus) manipulated the political system to become consul at a young age, bypassing traditional requirements. This unprecedented move demonstrated how political norms could be circumvented in times of crisis.",
-        image: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?q=80&w=1920&auto=format&fit=crop',
+        image: '/media/images/Appointment of Augustus as Consul.jpg',
         gameEffect: 'Power of consulship: You gain a 1-off consulship. When activated, you become the next consul. After that round, the consulship returns to the original succession.'
       },
       {
         title: "Eruption of Mount Vesuvius (79 CE)",
         description: "The catastrophic eruption buried entire cities under ash and lava, seen by many Romans as divine punishment or wrath. The destruction of Pompeii and Herculaneum served as a reminder of the gods' power to bring swift and complete destruction.",
-        image: 'https://images.unsplash.com/photo-1599939571322-792a326991f2?q=80&w=1920&auto=format&fit=crop',
+        image: '/media/images/Eruption of Mount Vesuvius.jpg',
         gameEffect: 'Destruction by the gods: You can destroy the province of any 1 player.'
       },
       {
         title: "Constantine's Vision (312 CE)",
         description: "Before the Battle of the Milvian Bridge, Constantine reportedly saw a vision of the Christian cross and heard the words 'In this sign, you will conquer.' He attributed his victory to divine intervention, marking a turning point in Roman religious history.",
-        image: 'https://images.unsplash.com/photo-1575384043001-f37f48835528?q=80&w=1920&auto=format&fit=crop',
+        image: '/media/images/Constantine\'s Vision.jpg',
         gameEffect: 'God on your side: You instantly win any challenge.'
       },
       {
         title: "Intercession of the Vestal Virgins",
         description: "The Vestal Virgins held immense religious authority and could intervene in state affairs, including influencing Senate decisions, based on their perceived connection to divine will. Their unique position allowed them to sway political decisions through religious authority.",
-        image: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?q=80&w=1920&auto=format&fit=crop',
+        image: '/media/images/Vestal Virgins.jpg',
         gameEffect: 'Divine manipulation: You can veto the army/money token distribution of the consul/senate at the start of a consulship.'
       },
       {
         title: "Sanctuary of the Temple of Vesta",
         description: "Temples like the Temple of Vesta were considered sacred sanctuaries where no violence or legal action could occur. This principle of religious sanctuary provided protection to those who sought refuge within sacred spaces.",
-        image: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?q=80&w=1920&auto=format&fit=crop',
+        image: '/media/images/Temple-of-Vesta.jpg',
         gameEffect: 'Immunity: You can deny a player from committing any moves against you.'
       }
     ]
