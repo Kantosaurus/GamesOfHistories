@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import PageTransition from '../components/PageTransition';
@@ -213,7 +213,7 @@ const additionalSections: AdditionalSection[] = [
   }
 ];
 
-export default function GameplayRules() {
+function GameplayRulesContent() {
   const [activePhase, setActivePhase] = useState(0);
   const [activeSection, setActiveSection] = useState(0);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -494,5 +494,13 @@ export default function GameplayRules() {
         </section>
       </main>
     </PageTransition>
+  );
+}
+
+export default function GameplayRules() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <GameplayRulesContent />
+    </Suspense>
   );
 } 
