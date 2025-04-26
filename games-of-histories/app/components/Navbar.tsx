@@ -30,7 +30,7 @@ export default function Navbar() {
             <Link href="/components" className="text-stone-700 hover:text-amber-800 transition-colors">
               Components
             </Link>
-            <Link href="/gallery" className="text-stone-700 hover:text-amber-800 transition-colors">
+            <Link href="/history" className="text-stone-700 hover:text-amber-800 transition-colors">
               History
             </Link>
           </div>
@@ -89,7 +89,7 @@ export default function Navbar() {
               Components
             </Link>
             <Link
-              href="/gallery"
+              href="/history"
               className="block px-3 py-2 text-stone-700 hover:text-amber-800"
               onClick={() => setIsMenuOpen(false)}
             >

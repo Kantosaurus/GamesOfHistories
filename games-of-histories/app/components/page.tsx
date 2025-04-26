@@ -125,6 +125,35 @@ const cardDetails: CardDetail[] = [
     )
   },
   {
+    title: 'Information Leak',
+    description: 'A player\'s allegiance is revealed to another player, potentially changing the dynamics of alliances and strategies.',
+    abilities: [
+      'Choose 1 player to view your allegiance card',
+      'Strategic information sharing',
+      'Potential alliance formation'
+    ],
+    icon: (
+      <svg className="w-12 h-12 text-amber-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+      </svg>
+    )
+  },
+  {
+    title: 'Double Crossing',
+    description: 'Two players\' allegiances are shuffled and redealt, creating uncertainty and potential shifts in alliances.',
+    abilities: [
+      '2 players\' allegiance cards are shuffled and redealt',
+      'Creates uncertainty in alliances',
+      'Forces strategic adaptation'
+    ],
+    icon: (
+      <svg className="w-12 h-12 text-amber-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
+      </svg>
+    )
+  },
+  {
     title: 'Gift from Gods Cards',
     description: 'Special cards that provide powerful one-time abilities. These can be game-changing when used at the right moment.',
     abilities: [

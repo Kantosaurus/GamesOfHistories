@@ -7,6 +7,7 @@ import PageTransition from '../components/PageTransition';
 
 type ContentItem = {
   title: string;
+  isNew?: boolean;
   description: string;
   image: string;
   gameEffect?: string;
@@ -14,7 +15,7 @@ type ContentItem = {
 
 type HistoricalSection = {
   id: string;
-  title: string;
+  title: string | JSX.Element;
   icon: JSX.Element;
   content: ContentItem[];
 };
@@ -100,7 +101,14 @@ const historicalSections: HistoricalSection[] = [
   },
   {
     id: 'events',
-    title: 'Events Cards',
+    title: (
+      <div className="flex items-center">
+        Events Cards
+        <span className="ml-2 px-2 py-0.5 text-xs font-semibold bg-amber-500 text-white rounded-full">
+          New
+        </span>
+      </div>
+    ),
     icon: (
       <svg className="w-12 h-12 text-amber-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -115,9 +123,10 @@ const historicalSections: HistoricalSection[] = [
       },
       {
         title: "Punic Wars (264-146 BCE)",
-        description: "A series of three major wars between Rome and Carthage for control of the western Mediterranean. These conflicts transformed Rome from a regional power into an empire, requiring unprecedented military and economic mobilization.",
+        isNew: true,
+        description: "A series of three major wars between Rome and Carthage for control of the western Mediterranean. Intelligence leaks and espionage played crucial roles in strategic maneuvers during the wars, with Scipio Africanus being a key figure in these operations.",
         image: '/media/images/Punic Wars (264-146 BCE).jpg',
-        gameEffect: 'The consul has decided to wage war against a foreign nation. All players contribute 1 quarter of their armies/money tokens to support the war.'
+        gameEffect: 'Information leak! Choose 1 player who can view your allegiance card.'
       },
       {
         title: "Hannibal's Retreat (203 BCE)",
@@ -168,6 +177,13 @@ const historicalSections: HistoricalSection[] = [
         gameEffect: 'One of your provinces is facing a heavy financial debt. You need to clear the debt. Lose 3 money tokens.'
       },
       {
+        title: "Betrayal of Sejanus (31 CE)",
+        isNew: true,
+        description: "Sejanus, once a trusted advisor to Tiberius, was executed after being implicated in a plot against the emperor, highlighting political double-crossing.",
+        image: '/media/images/Betrayal of Sejanus.jpg',
+        gameEffect: 'Double crossing: 2 players\' allegiance cards are shuffled and redealt to them.'
+      },
+      {
         title: "Boudica's Revolt (60-61 CE)",
         description: "Led by Queen Boudica of the Iceni tribe, this massive uprising against Roman rule in Britain resulted in significant territorial losses. The revolt was sparked by Roman oppression and personal grievances, demonstrating the fragility of Roman control in newly conquered territories.",
         image: '/media/images/Boudica\'s Revolt (60-61 CE).jpeg',
@@ -189,7 +205,14 @@ const historicalSections: HistoricalSection[] = [
   },
   {
     id: 'gifts',
-    title: 'Gifts of God Cards',
+    title: (
+      <div className="flex items-center">
+        Gifts of God Cards
+        <span className="ml-2 px-2 py-0.5 text-xs font-semibold bg-amber-500 text-white rounded-full">
+          New
+        </span>
+      </div>
+    ),
     icon: (
       <svg className="w-12 h-12 text-amber-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -201,6 +224,13 @@ const historicalSections: HistoricalSection[] = [
         description: "The dedication of this temple was seen as a divine blessing for Rome's military campaigns. Romans believed that invoking Jupiter's favor would bring them success in battle. This temple became the center of Roman state religion and a symbol of divine support for Roman endeavors.",
         image: '/media/images/Temple of Jupiter Optimus Maximus.jpg',
         gameEffect: 'Godspeed: You get to add 5 to your dice roll.'
+      },
+      {
+        title: "The Sibylline Books (500 BCE)",
+        isNew: true,
+        description: "The Sibylline Books were sacred texts consulted by the Roman Senate during times of crisis. These books were believed to contain divine revelations that could guide Rome through difficult decisions. Similarly, you gain insight into another player's allegiance through divine intervention.",
+        image: '/media/images/The Sibylline Books.jpg',
+        gameEffect: 'Divine revelation: You get to see the allegiance card of one player. (10 money tokens)'
       },
       {
         title: "Hannibal Crossing the Alps (218 BCE)",
@@ -248,6 +278,13 @@ const historicalSections: HistoricalSection[] = [
   }
 ];
 
+const TitleComponent = ({ title }: { title: string | JSX.Element }) => {
+  if (typeof title === 'string') {
+    return <>{title}</>;
+  }
+  return title;
+};
+
 export default function HistoricalContext() {
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -260,26 +297,6 @@ export default function HistoricalContext() {
     setIsTransitioning(true);
     setActiveSection(sectionId);
     setCurrentSlide(0);
-  };
-
-  const scrollToSlide = (index: number) => {
-    if (!containerRef.current) return;
-    
-    const sections = containerRef.current.getElementsByTagName('section');
-    if (sections[index]) {
-      isScrolling.current = true;
-      sections[index].scrollIntoView({ behavior: 'smooth' });
-      
-      // Clear any existing timeout
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-      
-      // Set a new timeout to reset isScrolling
-      timeoutRef.current = setTimeout(() => {
-        isScrolling.current = false;
-      }, 1000);
-    }
   };
 
   const handleScroll = () => {
@@ -297,6 +314,27 @@ export default function HistoricalContext() {
     }
   };
 
+  const scrollToSlide = (index: number) => {
+    if (!containerRef.current) return;
+    
+    const sections = containerRef.current.getElementsByTagName('section');
+    if (sections[index]) {
+      isScrolling.current = true;
+      sections[index].scrollIntoView({ behavior: 'smooth' });
+      setCurrentSlide(index);
+      
+      // Clear any existing timeout
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      
+      // Set a new timeout to reset isScrolling
+      timeoutRef.current = setTimeout(() => {
+        isScrolling.current = false;
+      }, 1000);
+    }
+  };
+
   const handleKeyDown = (e: KeyboardEvent) => {
     if (!activeSection) return;
 
@@ -310,10 +348,34 @@ export default function HistoricalContext() {
     }
   };
 
+  const scrollToNewContent = () => {
+    if (!containerRef.current) return;
+    
+    const currentSection = historicalSections.find(section => section.id === activeSection);
+    if (!currentSection) return;
+
+    const newItems = currentSection.content
+      .map((item, index) => ({ item, index }))
+      .filter(({ item }) => item.isNew);
+
+    if (newItems.length === 0) return;
+
+    // Find the next new item after the current slide
+    const nextNewItem = newItems.find(({ index }) => index > currentSlide) || newItems[0];
+    
+    if (nextNewItem) {
+      scrollToSlide(nextNewItem.index);
+    }
+  };
+
   useEffect(() => {
     if (activeSection) {
       document.body.style.overflow = 'hidden';
       window.addEventListener('keydown', handleKeyDown);
+      const container = containerRef.current;
+      if (container) {
+        container.addEventListener('scroll', handleScroll);
+      }
     } else {
       document.body.style.overflow = 'auto';
     }
@@ -321,6 +383,10 @@ export default function HistoricalContext() {
     return () => {
       document.body.style.overflow = 'auto';
       window.removeEventListener('keydown', handleKeyDown);
+      const container = containerRef.current;
+      if (container) {
+        container.removeEventListener('scroll', handleScroll);
+      }
     };
   }, [activeSection, currentSlide]);
 
@@ -329,6 +395,34 @@ export default function HistoricalContext() {
       <main className="min-h-screen bg-stone-900">
         <Navbar />
         
+        {/* New Content Buttons - Show based on active section */}
+        {activeSection === 'gifts' && (
+          <motion.button
+            className="fixed top-24 right-8 z-50 px-4 py-2 bg-amber-800/90 text-white rounded-lg hover:bg-amber-700 transition-colors flex items-center gap-2"
+            onClick={scrollToNewContent}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <span>New Content</span>
+            <span className="px-2 py-0.5 text-xs font-medium bg-amber-500/20 text-amber-100 rounded-full border border-amber-500/30">NEW</span>
+          </motion.button>
+        )}
+        {activeSection === 'events' && (
+          <motion.button
+            className="fixed top-24 right-8 z-50 px-4 py-2 bg-amber-800/90 text-white rounded-lg hover:bg-amber-700 transition-colors flex items-center gap-2"
+            onClick={scrollToNewContent}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <span>New Content</span>
+            <span className="px-2 py-0.5 text-xs font-medium bg-amber-500/20 text-amber-100 rounded-full border border-amber-500/30">NEW</span>
+          </motion.button>
+        )}
+
         {/* Main Category Selection */}
         <AnimatePresence>
           {!activeSection && (
@@ -455,9 +549,7 @@ export default function HistoricalContext() {
                         >
                           <div className="w-8 h-8 rounded-full bg-amber-800 border-4 border-amber-500 shadow-lg" />
                           <div className="absolute top-1/2 left-full transform -translate-y-1/2 ml-4 text-amber-500 whitespace-nowrap text-sm">
-                            {activeSection === 'events' 
-                              ? item.title.match(/\((\d+ (?:BCE|CE))\)/)?.[1] || ''
-                              : item.title.match(/\(([^)]+)\)/)?.[1] || ''}
+                            {item.title.match(/\((\d+ (?:BCE|CE))\)/)?.[1] || ''}
                           </div>
                         </motion.div>
                       )}
@@ -480,7 +572,12 @@ export default function HistoricalContext() {
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: 0.3 * index }}
                         >
-                          {item.title}
+                          <div className="flex items-center justify-center gap-2">
+                            {item.title}
+                            {item.isNew && (
+                              <span className="px-2 py-0.5 text-xs font-medium bg-amber-800/80 text-amber-100 rounded-full border border-amber-500/30">NEW</span>
+                            )}
+                          </div>
                         </motion.h2>
                         <motion.p
                           className="text-lg md:text-xl text-amber-100/90 mb-8"

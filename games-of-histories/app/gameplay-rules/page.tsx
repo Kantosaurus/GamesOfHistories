@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import PageTransition from '../components/PageTransition';
+import { useSearchParams } from 'next/navigation';
 
 // Add these type definitions at the top of the file after imports
 type EventCard = {
@@ -69,8 +70,8 @@ const rulesSections = [
   {
     title: 'Game Objectives',
     content: [
-      'The primary objective is to control as much territory as possible',
-      'Players compete to expand their influence across the map',
+      <span key="incumbents" className="text-amber-800">Incumbents: Gain control of 2 key provinces and 4 regular provinces by the end of 2 government cycles</span>,
+      <span key="spies" className="text-amber-800">Spies: Prevent incumbents from gaining control of 2 key provinces and 4 regular provinces by the end of 2 government cycles</span>,
       'Territory control is determined by the number of provinces under your command',
       'The player with the most territory at the end of the game wins'
     ],
@@ -81,7 +82,9 @@ const rulesSections = [
     content: [
       'Consul: Controls military, distributes army tokens, can disapprove 1 action involving army tokens',
       'Senate: Controls treasury, distributes money tokens, can disapprove 1 action involving money tokens',
-      'Assembly Member: Can convene all legislators once to vote on important decisions'
+      'Assembly Member: Can convene all legislators once to vote on important decisions',
+      <span key="incumbents-role" className="text-amber-800">Incumbents: Must gain control of 2 key provinces and 4 regular provinces by the end of 2 government cycles</span>,
+      <span key="spies-role" className="text-amber-800">Spies: Must prevent incumbents from gaining control of 2 key provinces and 4 regular provinces by the end of 2 government cycles</span>
     ],
     description: "Each player takes on a specific role with unique powers and responsibilities. The Consul commands military forces, the Senate manages financial resources, and Assembly Members can influence important decisions through voting. These roles create a dynamic balance of power and require cooperation and negotiation between players."
   },
@@ -155,6 +158,14 @@ const additionalSections: AdditionalSection[] = [
         title: 'Sickness',
         description: 'Disease spreads through provinces. Players must spend resources on medicine or risk losing influence in affected areas.'
       },
+      {
+        title: 'Information Leak',
+        description: 'A player\'s allegiance is revealed to another player, potentially changing the dynamics of alliances and strategies.'
+      },
+      {
+        title: 'Double Crossing',
+        description: 'Two players\' allegiances are shuffled and redealt, creating uncertainty and potential shifts in alliances.'
+      }
     ]
   },
   {
@@ -193,6 +204,10 @@ const additionalSections: AdditionalSection[] = [
       {
         title: 'Immunity',
         description: 'Gain divine protection. Prevent one action or event card from affecting you or your provinces.'
+      },
+      {
+        title: 'Divine Revelation',
+        description: 'The gods reveal the true allegiance of another player. You get to see the allegiance card of one player. (Cost: 10 money tokens)'
       }
     ]
   }
@@ -205,6 +220,22 @@ export default function GameplayRules() {
   const [showAdditional, setShowAdditional] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<string | null>(null);
   const [selectedGift, setSelectedGift] = useState<string | null>(null);
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    // Check if we should scroll to game rules
+    if (searchParams.get('section') === 'game-rules') {
+      const gameRulesSection = document.getElementById('game-rules');
+      if (gameRulesSection) {
+        gameRulesSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else if (searchParams.get('section') === 'additional-elements') {
+      const additionalElementsSection = document.getElementById('additional-elements');
+      if (additionalElementsSection) {
+        additionalElementsSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  }, [searchParams]);
 
   return (
     <PageTransition>
@@ -298,7 +329,7 @@ export default function GameplayRules() {
               </div>
 
               {/* Rules Section */}
-              <div>
+              <div id="game-rules">
                 <h2 className="text-3xl font-serif text-center mb-8 text-amber-900">Game Rules</h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
                   {rulesSections.map((section, index) => (
@@ -311,7 +342,14 @@ export default function GameplayRules() {
                       whileTap={{ scale: 0.98 }}
                       onClick={() => setActiveSection(index)}
                     >
-                      <h3 className="text-xl font-serif mb-4">{section.title}</h3>
+                      <h3 className="text-xl font-serif mb-4">
+                        {section.title}
+                        {(section.title === 'Game Objectives' || section.title === 'Player Roles') && (
+                          <span className="ml-2 px-2 py-0.5 text-xs font-semibold bg-amber-500 text-white rounded-full">
+                            New
+                          </span>
+                        )}
+                      </h3>
                       <p className={activeSection === index ? 'text-white/90' : 'text-stone-600'}>
                         Click to view details
                       </p>
@@ -341,6 +379,7 @@ export default function GameplayRules() {
                 </motion.div>
 
                 <motion.div
+                  id="additional-elements"
                   className="mt-8 text-center"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -368,7 +407,7 @@ export default function GameplayRules() {
                             (section.content as EventCard[]).map((item, itemIndex) => (
                               <motion.div
                                 key={itemIndex}
-                                className={`bg-stone-50 p-3 rounded-lg cursor-pointer ${
+                                className={`bg-stone-50 p-3 rounded-lg cursor-pointer relative ${
                                   selectedEvent === item.title ? 'ring-2 ring-amber-500' : ''
                                 }`}
                                 whileHover={{ scale: 1.02 }}
@@ -377,6 +416,11 @@ export default function GameplayRules() {
                               >
                                 <p className="text-stone-600 font-medium">
                                   {item.title}
+                                  {(item.title === 'Information Leak' || item.title === 'Double Crossing') && (
+                                    <span className="ml-2 px-2 py-0.5 text-xs font-semibold bg-amber-500 text-white rounded-full">
+                                      New
+                                    </span>
+                                  )}
                                 </p>
                               </motion.div>
                             ))
@@ -393,6 +437,11 @@ export default function GameplayRules() {
                               >
                                 <p className="text-stone-600 font-medium">
                                   {item.title}
+                                  {item.title === 'Divine Revelation' && (
+                                    <span className="ml-2 px-2 py-0.5 text-xs font-semibold bg-amber-500 text-white rounded-full">
+                                      New
+                                    </span>
+                                  )}
                                 </p>
                               </motion.div>
                             ))

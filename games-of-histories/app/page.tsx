@@ -38,6 +38,18 @@ export default function Home() {
             >
               Command your legions, build your empire, and shape the destiny of Rome
             </motion.p>
+            <motion.button
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              onClick={() => {
+                const featuresSection = document.getElementById('latest-features');
+                featuresSection?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="bg-amber-600 hover:bg-amber-700 text-white font-serif px-8 py-3 rounded-lg transition-colors duration-200"
+            >
+              See Latest Features
+            </motion.button>
           </div>
         </section>
 
@@ -124,6 +136,87 @@ export default function Home() {
                       a unique experience that will keep players coming back for more.
                     </p>
                   </div>
+                </div>
+              </motion.div>
+
+              {/* Latest Features Section */}
+              <motion.div 
+                id="latest-features"
+                className="bg-white rounded-lg shadow-lg p-8 mb-16"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+              >
+                <div className="flex items-center mb-6">
+                  <div className="text-4xl mr-4 text-amber-800">✨</div>
+                  <h2 className="text-2xl font-serif text-amber-900">Latest Features</h2>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <motion.div 
+                    className="bg-stone-50 rounded-lg p-6"
+                    whileHover={{ y: -5 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <div className="text-3xl mb-4 text-amber-800">🎲</div>
+                    <h3 className="text-xl font-serif text-amber-900 mb-3">Gameplay Rules</h3>
+                    <p className="text-stone-600 mb-4">
+                      Comprehensive gameplay rules now available, detailing everything from basic mechanics to advanced strategies.
+                    </p>
+                    <a 
+                      href="/gameplay-rules?section=game-rules"
+                      className="inline-block bg-amber-600 hover:bg-amber-700 text-white font-serif px-4 py-2 rounded-lg transition-colors duration-200"
+                    >
+                      View Rules
+                    </a>
+                  </motion.div>
+
+                  <motion.div 
+                    className="bg-stone-50 rounded-lg p-6"
+                    whileHover={{ y: -5 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <div className="text-3xl mb-4 text-amber-800">📚</div>
+                    <h3 className="text-xl font-serif text-amber-900 mb-3">Historical Context</h3>
+                    <p className="text-stone-600 mb-4">
+                      Explore the rich historical background of ancient Rome, including government, military, society, and special event cards.
+                    </p>
+                    <a 
+                      href="/history"
+                      className="inline-block bg-amber-600 hover:bg-amber-700 text-white font-serif px-4 py-2 rounded-lg transition-colors duration-200"
+                    >
+                      View History
+                    </a>
+                  </motion.div>
+
+                  <motion.div 
+                    className="bg-stone-50 rounded-lg p-6"
+                    whileHover={{ y: -5 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <div className="text-3xl mb-4 text-amber-800">🎨</div>
+                    <h3 className="text-xl font-serif text-amber-900 mb-3">Visual Assets</h3>
+                    <p className="text-stone-600">
+                      New visual assets including the Roman map and other game components have been added to enhance the gaming experience.
+                    </p>
+                  </motion.div>
+
+                  <motion.div 
+                    className="bg-stone-50 rounded-lg p-6"
+                    whileHover={{ y: -5 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <div className="text-3xl mb-4 text-amber-800">🃏</div>
+                    <h3 className="text-xl font-serif text-amber-900 mb-3">New Cards Added</h3>
+                    <p className="text-stone-600 mb-4">
+                      Exciting new cards have been introduced, adding fresh strategies and gameplay elements to enhance your gaming experience.
+                    </p>
+                    <a 
+                      href="/gameplay-rules?section=additional-elements"
+                      className="inline-block bg-amber-600 hover:bg-amber-700 text-white font-serif px-4 py-2 rounded-lg transition-colors duration-200"
+                    >
+                      View New Cards
+                    </a>
+                  </motion.div>
                 </div>
               </motion.div>
 
